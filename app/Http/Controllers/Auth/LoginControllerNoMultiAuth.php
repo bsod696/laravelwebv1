@@ -47,22 +47,6 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    protected function sendLoginResponse(Request $request)
-    {
-        $customRememberMeTimeInMinutes = 10;
-        $rememberTokenCookieKey = Auth::getRecallerName();
-        Cookie::queue($rememberTokenCookieKey, 
-            Cookie::get($rememberTokenCookieKey), $customRememberMeTimeInMinutes
-        );  
-     
-        $request->session()->regenerate();
-
-        $this->clearLoginAttempts($request);
-
-        return $this->authenticated($request, $this->guard()->user())
-                ?: redirect()->intended($this->redirectPath());
-    }
-
     public function logout() 
     {
         Auth::logout();
